@@ -39,7 +39,8 @@ class Configuration(object):
         # simple rotation
 
         if self.west_exist(central_node) and self.east_exist(central_node):
-            print('CENTER')
+            print('MIDDLE')
+            self.middle_rotation(central_node, new_conf)
             pass
         elif not self.west_exist(central_node) and self.east_exist(central_node):
             print('FAR WEST')
@@ -64,6 +65,31 @@ class Configuration(object):
 
     def get_node_by_coordinate(self, x, y):
         return self.nodes_map.get(str(x) + str(y), node_mod.InvalidNode())
+
+    def middle_rotation(self, central_node, new_conf):
+        north_x = central_node.x
+        north_y = central_node.y + 1
+
+        south_x = central_node.x
+        south_y = central_node.y - 1
+
+        east_x = central_node.x + 1
+        east_y = central_node.y
+
+        west_x = central_node.x - 1
+        west_y = central_node.y
+
+        new_conf.get_node_by_coordinate(south_x, south_y).is_active = (
+            self.get_node_by_coordinate(east_x, east_y).is_active)
+
+        new_conf.get_node_by_coordinate(east_x, east_y).is_active = (
+            self.get_node_by_coordinate(north_x, north_y).is_active)
+
+        new_conf.get_node_by_coordinate(north_x, north_y).is_active = (
+            self.get_node_by_coordinate(west_x, west_y).is_active)
+
+        new_conf.get_node_by_coordinate(west_x, west_y).is_active = (
+            self.get_node_by_coordinate(south_x, south_y).is_active)
 
     def west_rotation(self, central_node, new_conf):
         north_x = central_node.x
@@ -112,6 +138,3 @@ class Configuration(object):
                         self.get_node_by_coordinate(east_x, east_y).is_active)
                 else:
                     pass
-
-
-
