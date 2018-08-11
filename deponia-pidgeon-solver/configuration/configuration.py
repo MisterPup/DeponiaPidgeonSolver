@@ -16,11 +16,11 @@ class Configuration(object):
         return str(self.nodes)
 
     def get_rotated_configurations(self):
-        configuration = []
-        central_nodes = [x for x in self.nodes if x.is_center]
+        configurations = []
+        central_nodes = [x for x in self.nodes if x.is_center and x.is_active]
         for central_node in central_nodes:
-            configuration.append(self.get_rotated_configuration(central_node))
-        return configuration
+            configurations.append((self.get_rotated_configuration(central_node), central_node))
+        return configurations
 
     def get_rotated_configuration(self, central_node):
         if central_node not in self.nodes:

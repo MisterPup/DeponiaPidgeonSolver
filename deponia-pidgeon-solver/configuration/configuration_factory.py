@@ -17,8 +17,5 @@ class ConfigurationFactory(object):
                     new_node.is_active = True
                 configuration_nodes.append(new_node)
             c = configuration.Configuration(configuration_nodes)
-            # print(c.get_signature())
-            # print(c)
-            # print("*****")
             config_list.append(c)
         return config_list
