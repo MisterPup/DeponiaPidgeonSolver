@@ -101,7 +101,8 @@ class Configuration(object):
 
         is_one_rotation = (not self.get_node_by_coordinate(south_x, south_y).is_active
                            or (self.get_node_by_coordinate(south_x, south_y).is_active
-                               and not self.get_node_by_coordinate(east_x, east_y).is_active))
+                               and not self.get_node_by_coordinate(east_x, east_y).is_active
+                               and not self.get_node_by_coordinate(north_x, north_y).is_active))
 
         is_double_rotation = (self.get_node_by_coordinate(south_x, south_y).is_active
                               and self.get_node_by_coordinate(east_x, east_y).is_active
@@ -134,7 +135,8 @@ class Configuration(object):
 
         is_one_rotation = (not self.get_node_by_coordinate(north_x, north_y).is_active
                            or (self.get_node_by_coordinate(north_x, north_y).is_active
-                               and not self.get_node_by_coordinate(west_x, west_y).is_active))
+                               and not self.get_node_by_coordinate(west_x, west_y).is_active
+                               and not self.get_node_by_coordinate(south_x, south_y).is_active))
 
         is_double_rotation = (self.get_node_by_coordinate(north_x, north_y).is_active
                               and self.get_node_by_coordinate(west_x, west_y).is_active
