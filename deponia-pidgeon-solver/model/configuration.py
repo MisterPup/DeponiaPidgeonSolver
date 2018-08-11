@@ -15,8 +15,12 @@ class Configuration(object):
     def __repr__(self):
         return str(self.nodes)
 
-    # def get_rotated_configurations(self):
-    #     central_nodes = [x for x in self.actives_nodes if x.is_center]
+    def get_rotated_configurations(self):
+        configuration = []
+        central_nodes = [x for x in self.nodes if x.is_center]
+        for central_node in central_nodes:
+            configuration.append(self.get_rotated_configuration(central_node))
+        return configuration
 
     def get_rotated_configuration(self, central_node):
         if central_node not in self.nodes:
@@ -36,8 +40,6 @@ class Configuration(object):
 
         new_conf = Configuration(new_configuration_nodes)
 
-        # simple rotation
-
         if self.west_exist(central_node) and self.east_exist(central_node):
             self.middle_rotation(central_node, new_conf)
         elif not self.west_exist(central_node) and self.east_exist(central_node):
@@ -45,7 +47,7 @@ class Configuration(object):
         elif self.west_exist(central_node) and not self.east_exist(central_node):
             self.east_rotation(central_node, new_conf)
         else:
-            raise Exception('Invalid Grid')
+            raise Exception('Invalid Configuration')
 
         return new_conf
 
@@ -97,7 +99,15 @@ class Configuration(object):
         east_x = central_node.x + 1
         east_y = central_node.y
 
-        if not self.get_node_by_coordinate(south_x, south_y).is_active:  # no need to null-check for south node
+        is_one_rotation = (not self.get_node_by_coordinate(south_x, south_y).is_active
+                           or (self.get_node_by_coordinate(south_x, south_y).is_active
+                               and not self.get_node_by_coordinate(east_x, east_y).is_active))
+
+        is_double_rotation = (self.get_node_by_coordinate(south_x, south_y).is_active
+                              and self.get_node_by_coordinate(east_x, east_y).is_active
+                              and not self.get_node_by_coordinate(north_x, north_y).is_active)
+
+        if is_one_rotation:
             # substitute nodes of new_conf with nodes from original conf to avoid overwriting original values
             new_conf.get_node_by_coordinate(south_x, south_y).is_active = (
                 self.get_node_by_coordinate(east_x, east_y).is_active)
@@ -105,28 +115,12 @@ class Configuration(object):
             new_conf.get_node_by_coordinate(east_x, east_y).is_active = (
                 self.get_node_by_coordinate(north_x, north_y).is_active)
 
-            new_conf.get_node_by_coordinate(north_x, north_y).is_active = (  # False
+            new_conf.get_node_by_coordinate(north_x, north_y).is_active = (
                 self.get_node_by_coordinate(south_x, south_y).is_active)
-        else:
-            if not self.get_node_by_coordinate(east_x, east_y).is_active:
-                new_conf.get_node_by_coordinate(south_x, south_y).is_active = (
-                    self.get_node_by_coordinate(east_x, east_y).is_active)
-
-                new_conf.get_node_by_coordinate(east_x, east_y).is_active = (
-                    self.get_node_by_coordinate(north_x, north_y).is_active)
-
-                new_conf.get_node_by_coordinate(north_x, north_y).is_active = (  # True
-                    self.get_node_by_coordinate(south_x, south_y).is_active)
-            else:
-                if not self.get_node_by_coordinate(north_x, north_y).is_active:
-                    new_conf.get_node_by_coordinate(south_x, south_y).is_active = (  # False
-                        self.get_node_by_coordinate(north_x, north_y).is_active)
-                    new_conf.get_node_by_coordinate(east_x, east_y).is_active = (  # True
-                        self.get_node_by_coordinate(south_x, south_y).is_active)
-                    new_conf.get_node_by_coordinate(north_x, north_y).is_active = (  # True
-                        self.get_node_by_coordinate(east_x, east_y).is_active)
-                else:
-                    pass
+        elif is_double_rotation:
+            new_conf.get_node_by_coordinate(south_x, south_y).is_active = False
+            new_conf.get_node_by_coordinate(east_x, east_y).is_active = True
+            new_conf.get_node_by_coordinate(north_x, north_y).is_active = True
 
     def east_rotation(self, central_node, new_conf):
         north_x = central_node.x
@@ -138,9 +132,17 @@ class Configuration(object):
         west_x = central_node.x - 1
         west_y = central_node.y
 
-        if not self.get_node_by_coordinate(north_x, north_y).is_active:
+        is_one_rotation = (not self.get_node_by_coordinate(north_x, north_y).is_active
+                           or (self.get_node_by_coordinate(north_x, north_y).is_active
+                               and not self.get_node_by_coordinate(west_x, west_y).is_active))
+
+        is_double_rotation = (self.get_node_by_coordinate(north_x, north_y).is_active
+                              and self.get_node_by_coordinate(west_x, west_y).is_active
+                              and not self.get_node_by_coordinate(south_x, south_y).is_active)
+
+        if is_one_rotation:
             # substitute nodes of new_conf with nodes from original conf to avoid overwriting original values
-            new_conf.get_node_by_coordinate(south_x, south_y).is_active = (  # False
+            new_conf.get_node_by_coordinate(south_x, south_y).is_active = (
                 self.get_node_by_coordinate(north_x, north_y).is_active)
 
             new_conf.get_node_by_coordinate(west_x, west_y).is_active = (
@@ -148,25 +150,7 @@ class Configuration(object):
 
             new_conf.get_node_by_coordinate(north_x, north_y).is_active = (
                 self.get_node_by_coordinate(west_x, west_y).is_active)
-        else:
-            if not self.get_node_by_coordinate(west_x, west_y).is_active:
-                new_conf.get_node_by_coordinate(south_x, south_y).is_active = (  # True
-                    self.get_node_by_coordinate(north_x, north_y).is_active)
-
-                new_conf.get_node_by_coordinate(west_x, west_y).is_active = (
-                    self.get_node_by_coordinate(south_x, south_y).is_active)
-
-                new_conf.get_node_by_coordinate(north_x, north_y).is_active = (
-                    self.get_node_by_coordinate(west_x, west_y).is_active)
-            else:
-                if not self.get_node_by_coordinate(south_x, south_y).is_active:
-                    new_conf.get_node_by_coordinate(north_x, north_y).is_active = (  # False
-                        self.get_node_by_coordinate(south_x, south_y).is_active)
-
-                    new_conf.get_node_by_coordinate(west_x, west_y).is_active = (  # True
-                        self.get_node_by_coordinate(north_x, north_y).is_active)
-
-                    new_conf.get_node_by_coordinate(south_x, south_y).is_active = (  # True
-                        self.get_node_by_coordinate(west_x, west_y).is_active)
-                else:
-                    pass
+        elif is_double_rotation:
+            new_conf.get_node_by_coordinate(north_x, north_y).is_active = False
+            new_conf.get_node_by_coordinate(west_x, west_y).is_active = True
+            new_conf.get_node_by_coordinate(south_x, south_y).is_active = True
