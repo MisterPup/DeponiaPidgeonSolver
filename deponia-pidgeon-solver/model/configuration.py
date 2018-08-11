@@ -24,9 +24,9 @@ class Configuration(object):
         else:
             found_node = self.nodes[self.nodes.index(central_node)]
             if not found_node.is_center:
-                raise ValueError('Not a center node')
+                raise ValueError('Not a central node')
             elif not found_node.is_active:
-                raise ValueError('Node not active')
+                raise ValueError('Central node not active')
 
         new_configuration_nodes = []
 
@@ -39,15 +39,11 @@ class Configuration(object):
         # simple rotation
 
         if self.west_exist(central_node) and self.east_exist(central_node):
-            print('MIDDLE')
             self.middle_rotation(central_node, new_conf)
-            pass
         elif not self.west_exist(central_node) and self.east_exist(central_node):
-            print('FAR WEST')
             self.west_rotation(central_node, new_conf)
         elif self.west_exist(central_node) and not self.east_exist(central_node):
-            print('FAR EAST')
-            pass
+            self.east_rotation(central_node, new_conf)
         else:
             raise Exception('Invalid Grid')
 
@@ -101,11 +97,7 @@ class Configuration(object):
         east_x = central_node.x + 1
         east_y = central_node.y
 
-        west_x = central_node.x - 1
-        west_y = central_node.y
-
         if not self.get_node_by_coordinate(south_x, south_y).is_active:  # no need to null-check for south node
-            print('S NOT ACTIVE')
             # substitute nodes of new_conf with nodes from original conf to avoid overwriting original values
             new_conf.get_node_by_coordinate(south_x, south_y).is_active = (
                 self.get_node_by_coordinate(east_x, east_y).is_active)
@@ -116,9 +108,7 @@ class Configuration(object):
             new_conf.get_node_by_coordinate(north_x, north_y).is_active = (  # False
                 self.get_node_by_coordinate(south_x, south_y).is_active)
         else:
-            print('S ACTIVE')
             if not self.get_node_by_coordinate(east_x, east_y).is_active:
-                print('E NOT ACTIVE')
                 new_conf.get_node_by_coordinate(south_x, south_y).is_active = (
                     self.get_node_by_coordinate(east_x, east_y).is_active)
 
@@ -128,7 +118,6 @@ class Configuration(object):
                 new_conf.get_node_by_coordinate(north_x, north_y).is_active = (  # True
                     self.get_node_by_coordinate(south_x, south_y).is_active)
             else:
-                print('E ACTIVE')
                 if not self.get_node_by_coordinate(north_x, north_y).is_active:
                     new_conf.get_node_by_coordinate(south_x, south_y).is_active = (  # False
                         self.get_node_by_coordinate(north_x, north_y).is_active)
@@ -136,5 +125,48 @@ class Configuration(object):
                         self.get_node_by_coordinate(south_x, south_y).is_active)
                     new_conf.get_node_by_coordinate(north_x, north_y).is_active = (  # True
                         self.get_node_by_coordinate(east_x, east_y).is_active)
+                else:
+                    pass
+
+    def east_rotation(self, central_node, new_conf):
+        north_x = central_node.x
+        north_y = central_node.y + 1
+
+        south_x = central_node.x
+        south_y = central_node.y - 1
+
+        west_x = central_node.x - 1
+        west_y = central_node.y
+
+        if not self.get_node_by_coordinate(north_x, north_y).is_active:
+            # substitute nodes of new_conf with nodes from original conf to avoid overwriting original values
+            new_conf.get_node_by_coordinate(south_x, south_y).is_active = (  # False
+                self.get_node_by_coordinate(north_x, north_y).is_active)
+
+            new_conf.get_node_by_coordinate(west_x, west_y).is_active = (
+                self.get_node_by_coordinate(south_x, south_y).is_active)
+
+            new_conf.get_node_by_coordinate(north_x, north_y).is_active = (
+                self.get_node_by_coordinate(west_x, west_y).is_active)
+        else:
+            if not self.get_node_by_coordinate(west_x, west_y).is_active:
+                new_conf.get_node_by_coordinate(south_x, south_y).is_active = (  # True
+                    self.get_node_by_coordinate(north_x, north_y).is_active)
+
+                new_conf.get_node_by_coordinate(west_x, west_y).is_active = (
+                    self.get_node_by_coordinate(south_x, south_y).is_active)
+
+                new_conf.get_node_by_coordinate(north_x, north_y).is_active = (
+                    self.get_node_by_coordinate(west_x, west_y).is_active)
+            else:
+                if not self.get_node_by_coordinate(south_x, south_y).is_active:
+                    new_conf.get_node_by_coordinate(north_x, north_y).is_active = (  # False
+                        self.get_node_by_coordinate(south_x, south_y).is_active)
+
+                    new_conf.get_node_by_coordinate(west_x, west_y).is_active = (  # True
+                        self.get_node_by_coordinate(north_x, north_y).is_active)
+
+                    new_conf.get_node_by_coordinate(south_x, south_y).is_active = (  # True
+                        self.get_node_by_coordinate(west_x, west_y).is_active)
                 else:
                     pass
