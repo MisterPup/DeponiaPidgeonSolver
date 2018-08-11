@@ -1,6 +1,6 @@
 import unittest
-import model.configuration as configuration
-import model.node as node
+import configuration.configuration as configuration
+import configuration.node as node
 
 
 class ConfigurationTest(unittest.TestCase):
