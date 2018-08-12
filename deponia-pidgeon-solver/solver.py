@@ -51,19 +51,19 @@ if __name__ == "__main__":
         edges_map[key] = rotation_node
 
     start_nodes = (
-        [node.Node(0, 2, is_center=False, is_active=False),
+        [node.Node(0, 2, is_center=False, is_active=True),
          node.Node(1, 2, is_center=False, is_active=True),
          node.Node(2, 2, is_center=False, is_active=True),
 
-         node.Node(0, 1, is_center=True, is_active=False),
+         node.Node(0, 1, is_center=True, is_active=True),
          node.Node(1, 1, is_center=True, is_active=True),
-         node.Node(2, 1, is_center=True, is_active=True),
+         node.Node(2, 1, is_center=True, is_active=False),
 
-         node.Node(0, 0, is_center=False, is_active=True),
+         node.Node(0, 0, is_center=False, is_active=False),
          node.Node(1, 0, is_center=True, is_active=False),
-         node.Node(2, 0, is_center=False, is_active=False),
+         node.Node(2, 0, is_center=False, is_active=True),
 
-         node.Node(1, -1, is_center=False, is_active=True)])
+         node.Node(1, -1, is_center=False, is_active=False)])
     start_configuration = configuration.Configuration(start_nodes)
 
     end_nodes = (
