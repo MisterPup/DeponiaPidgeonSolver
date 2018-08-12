@@ -23,8 +23,8 @@ This can be seen as we are constructing a graph where a vertex is a configuratio
 
 Once again Dijkstra can help us finding the shortest path from the starting configuration to the target one.
 
-In order to change the starting configuration, one must edit the "start_nodes" variable inside the "solver.py" file.
-Here is an example:
+In order to change the starting configuration, one must edit the "is_active" field for each node of the "start_nodes" variable inside the "solver.py" file.  
+Here is an example that represents the configuration shown in the first image:
 
 ```
 start_nodes = (
@@ -39,6 +39,8 @@ start_nodes = (
      node.Node(0, 0, is_center=False, is_active=False),
      node.Node(1, 0, is_center=True, is_active=False),
      node.Node(2, 0, is_center=False, is_active=True),
+
+     node.Node(1, -1, is_center=False, is_active=False)])
 ```
 
 Here is a possible output:
