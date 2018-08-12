@@ -10,7 +10,7 @@ class Configuration(object):
             self.nodes_map[str(node.x) + str(node.y)] = node
 
     def get_signature(self):
-        return ''.join(["{}{}".format(node.x, node.y) for node in self.nodes if node.is_active])
+        return ''.join(["[{}, {}]".format(node.x, node.y) for node in self.nodes if node.is_active])
 
     def __repr__(self):
         return str(self.nodes)

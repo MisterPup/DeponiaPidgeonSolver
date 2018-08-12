@@ -5,6 +5,7 @@ import graph.graph_generator as graph_generator
 import algorithm.dijkstra as dijkstra
 
 if __name__ == "__main__":
+
     node_list = (
         [node.Node(0, 2, is_center=False),  # top line
          node.Node(1, 2, is_center=False),  # top line
@@ -12,7 +13,7 @@ if __name__ == "__main__":
 
          node.Node(0, 1, is_center=True),  # middle line
          node.Node(1, 1, is_center=True),  # middle line
-         node.Node(1, 2, is_center=True),  # middle line
+         node.Node(2, 1, is_center=True),  # middle line
 
          node.Node(0, 0, is_center=False),  # bottom line
          node.Node(1, 0, is_center=True),  # bottom line
@@ -50,16 +51,16 @@ if __name__ == "__main__":
         edges_map[key] = rotation_node
 
     start_nodes = (
-        [node.Node(0, 2, is_center=False, is_active=True),
-         node.Node(1, 2, is_center=False, is_active=False),
+        [node.Node(0, 2, is_center=False, is_active=False),
+         node.Node(1, 2, is_center=False, is_active=True),
          node.Node(2, 2, is_center=False, is_active=True),
 
          node.Node(0, 1, is_center=True, is_active=False),
-         node.Node(1, 1, is_center=True, is_active=False),
-         node.Node(1, 2, is_center=True, is_active=True),
+         node.Node(1, 1, is_center=True, is_active=True),
+         node.Node(2, 1, is_center=True, is_active=True),
 
          node.Node(0, 0, is_center=False, is_active=True),
-         node.Node(1, 0, is_center=True, is_active=True),
+         node.Node(1, 0, is_center=True, is_active=False),
          node.Node(2, 0, is_center=False, is_active=False),
 
          node.Node(1, -1, is_center=False, is_active=True)])
@@ -67,15 +68,15 @@ if __name__ == "__main__":
 
     end_nodes = (
         [node.Node(0, 2, is_center=False, is_active=True),
-         node.Node(1, 2, is_center=False, is_active=True),
+         node.Node(1, 2, is_center=False, is_active=False),
          node.Node(2, 2, is_center=False, is_active=True),
 
          node.Node(0, 1, is_center=True, is_active=True),
          node.Node(1, 1, is_center=True, is_active=False),
-         node.Node(1, 2, is_center=True, is_active=True),
+         node.Node(2, 1, is_center=True, is_active=False),
 
-         node.Node(0, 0, is_center=False, is_active=False),
-         node.Node(1, 0, is_center=True, is_active=False),
+         node.Node(0, 0, is_center=False, is_active=True),
+         node.Node(1, 0, is_center=True, is_active=True),
          node.Node(2, 0, is_center=False, is_active=True),
 
          node.Node(1, -1, is_center=False, is_active=False)])
